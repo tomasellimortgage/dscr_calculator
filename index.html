@@ -9,12 +9,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Inter", sans-serif;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #FFFFFF;
-            color: #000000;
+            background-color: #f0f4f8;
+            color: #1e293b;
             line-height: 1.6;
             padding: 20px;
         }
@@ -22,17 +22,21 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: #FFFFFF;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(37, 48, 110, 0.1);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .header {
-            background: linear-gradient(135deg, #25306E, #92B1DD);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
             color: white;
             padding: 30px;
             text-align: center;
+            border-radius: 12px 12px 0 0;
         }
 
         .header h1 {
@@ -45,32 +49,24 @@
             font-size: 1.2rem;
             opacity: 0.9;
             font-weight: normal;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-top: 10px;
-            font-style: italic;
         }
 
         .info-box {
-            background: #f8f9fa;
-            border-left: 5px solid #25306E;
+            background: #e2e8f0;
+            border-left: 5px solid #1d4ed8;
             padding: 20px;
-            margin: 20px;
-            border-radius: 5px;
+            margin: 0 20px;
+            border-radius: 8px;
         }
 
         .info-box h3 {
-            color: #25306E;
+            color: #1d4ed8;
             margin-bottom: 15px;
             font-size: 1.3rem;
         }
 
         .calculator-section {
-            padding: 20px;
+            padding: 0 20px 20px;
         }
 
         .form-grid {
@@ -87,22 +83,23 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
-            color: #25306E;
+            font-weight: 600;
+            color: #1e293b;
         }
 
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #92B1DD;
-            border-radius: 5px;
+            border: 2px solid #93c5fd;
+            border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #25306E;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
         }
 
         .input-group {
@@ -112,13 +109,15 @@
 
         .input-group input {
             flex: 1;
+            border-radius: 8px 0 0 8px;
+            border-right: none;
         }
 
         .input-addon {
-            background: #25306E;
+            background: #1d4ed8;
             color: white;
             padding: 12px 15px;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 8px 8px 0;
             font-weight: bold;
         }
 
@@ -126,30 +125,31 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
         .rate-btn {
-            background: #92B1DD;
+            background: #3b82f6;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 3px;
+            padding: 10px 15px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.1s;
         }
 
         .rate-btn:hover {
-            background: #25306E;
+            background: #2563eb;
+            transform: translateY(-1px);
         }
 
         .results {
-            background: linear-gradient(135deg, #25306E, #92B1DD);
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
             color: white;
             padding: 30px;
-            margin: 20px;
-            border-radius: 10px;
+            margin: 0 20px;
+            border-radius: 12px;
         }
 
         .results h3 {
@@ -160,14 +160,14 @@
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
 
         .result-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
         }
 
@@ -197,7 +197,7 @@
         }
 
         .warning {
-            background: #dc3545;
+            background: #ef4444;
             color: white;
             padding: 15px;
             border-radius: 8px;
@@ -208,7 +208,7 @@
         }
 
         .loan-limit-warning {
-            background: #ff6b35;
+            background: #f97316;
             color: white;
             padding: 15px;
             border-radius: 8px;
@@ -219,7 +219,7 @@
         }
 
         .suggestions {
-            background: #28a745;
+            background: #22c55e;
             color: white;
             padding: 15px;
             border-radius: 8px;
@@ -254,8 +254,8 @@
         }
 
         .loan-officer {
-            background: #f8f9fa;
-            border: 2px solid #25306E;
+            background: #e2e8f0;
+            border: 2px solid #1d4ed8;
             padding: 20px;
             margin: 20px;
             border-radius: 10px;
@@ -263,20 +263,21 @@
         }
 
         .loan-officer h4 {
-            color: #25306E;
+            color: #1d4ed8;
             margin-bottom: 10px;
         }
 
         .disclaimers {
-            background: #f8f9fa;
+            background: #f0f4f8;
             padding: 20px;
             margin-top: 20px;
             font-size: 0.9rem;
             line-height: 1.4;
+            border-radius: 0 0 12px 12px;
         }
 
         .disclaimers h4 {
-            color: #25306E;
+            color: #1d4ed8;
             margin-bottom: 15px;
         }
 
@@ -285,7 +286,7 @@
         }
 
         .disclaimers a {
-            color: #25306E;
+            color: #1d4ed8;
             text-decoration: none;
         }
 
@@ -297,11 +298,9 @@
             .header h1 {
                 font-size: 2rem;
             }
-            
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            
             .dscr-ratio {
                 font-size: 2.5rem;
             }
@@ -338,7 +337,7 @@
                     <div class="form-group">
                         <label for="purchasePrice">Purchase Price</label>
                         <div class="input-group">
-                            <input type="number" id="purchasePrice" placeholder="500000">
+                            <input type="number" id="purchasePrice" placeholder="500000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -354,7 +353,7 @@
                     <div class="form-group">
                         <label for="downPaymentAmount">Down Payment Amount</label>
                         <div class="input-group">
-                            <input type="number" id="downPaymentAmount" placeholder="125000">
+                            <input type="number" id="downPaymentAmount" placeholder="125000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -362,7 +361,7 @@
                     <div class="form-group">
                         <label for="loanAmount">Loan Amount</label>
                         <div class="input-group">
-                            <input type="number" id="loanAmount" placeholder="375000">
+                            <input type="number" id="loanAmount" placeholder="375000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -370,7 +369,7 @@
                     <div class="form-group">
                         <label for="propertyTaxes">Annual Property Taxes</label>
                         <div class="input-group">
-                            <input type="number" id="propertyTaxes" placeholder="12000">
+                            <input type="number" id="propertyTaxes" placeholder="12000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -378,9 +377,9 @@
 
                 <div>
                     <div class="form-group">
-                        <label for="homeownersInsurance">Homeowner's Insurance</label>
+                        <label for="homeownersInsurance">Annual Homeowner's Insurance</label>
                         <div class="input-group">
-                            <input type="number" id="homeownersInsurance" placeholder="2000">
+                            <input type="number" id="homeownersInsurance" placeholder="2000" step="any">
                             <div class="input-addon">$/year</div>
                         </div>
                     </div>
@@ -388,7 +387,7 @@
                     <div class="form-group">
                         <label for="hoaFee">Monthly HOA Fee (if applicable)</label>
                         <div class="input-group">
-                            <input type="number" id="hoaFee" placeholder="0" value="0">
+                            <input type="number" id="hoaFee" placeholder="0" value="0" step="any">
                             <div class="input-addon">$/month</div>
                         </div>
                     </div>
@@ -418,7 +417,7 @@
                     <div class="form-group">
                         <label for="monthlyRent">Expected Monthly Rental Income</label>
                         <div class="input-group">
-                            <input type="number" id="monthlyRent" placeholder="4000">
+                            <input type="number" id="monthlyRent" placeholder="4000" step="any">
                             <div class="input-addon">$/month</div>
                         </div>
                     </div>
@@ -504,7 +503,12 @@
         }
 
         function calculateSuggestions(purchasePrice, currentDownPercent, currentRate, targetDSCR, monthlyRent, propertyTaxes, hoaFee) {
-            var homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value) || (purchasePrice * 0.004);
+            // Read homeowners insurance from the input field
+            var homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value) || 0;
+            if (homeownersInsurance === 0 && purchasePrice > 0) {
+                homeownersInsurance = purchasePrice * 0.004;
+            }
+
             var monthlyTaxes = propertyTaxes / 12;
             var monthlyInsurance = homeownersInsurance / 12;
             var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
@@ -580,37 +584,44 @@
             var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
             var monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
 
-            // Determine which fields were entered and update the others
-            if (purchasePrice > 0 && downPaymentPercent > 0) {
+            // Logic to handle user input for any of the linked fields (purchase price, down payment %, down payment amount, loan amount)
+            if (purchasePrice > 0 && downPaymentPercent > 0 && isNaN(downPaymentAmount) && isNaN(loanAmount)) {
                 downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
                 loanAmount = purchasePrice - downPaymentAmount;
-            } else if (purchasePrice > 0 && downPaymentAmount > 0) {
+            } else if (purchasePrice > 0 && downPaymentAmount > 0 && isNaN(downPaymentPercent) && isNaN(loanAmount)) {
                 downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
                 loanAmount = purchasePrice - downPaymentAmount;
-            } else if (purchasePrice > 0 && loanAmount > 0) {
+            } else if (purchasePrice > 0 && loanAmount > 0 && isNaN(downPaymentPercent) && isNaN(downPaymentAmount)) {
                 downPaymentAmount = purchasePrice - loanAmount;
                 downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
-            } else if (downPaymentAmount > 0 && loanAmount > 0) {
+            } else if (downPaymentAmount > 0 && loanAmount > 0 && isNaN(purchasePrice) && isNaN(downPaymentPercent)) {
                 purchasePrice = downPaymentAmount + loanAmount;
                 downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
             }
 
-            // If insurance is not manually entered, calculate it
-            if (homeownersInsurance === 0) {
+            // **Updated logic to recalculate insurance if the user has not entered a value**
+            if (homeownersInsurance === 0 && purchasePrice > 0) {
                 homeownersInsurance = purchasePrice * 0.004;
+                document.getElementById('homeownersInsurance').value = homeownersInsurance.toFixed(0);
+            } else if (homeownersInsurance > 0) {
+                // If user entered a value, keep it and don't overwrite it.
+                // Re-assigning here to ensure the value is a number for calculation.
+                homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value);
             }
 
+            // Update all the input fields with the calculated values
             document.getElementById('downPaymentAmount').value = downPaymentAmount.toFixed(0);
             document.getElementById('downPaymentPercent').value = downPaymentPercent.toFixed(1);
             document.getElementById('loanAmount').value = loanAmount.toFixed(0);
             document.getElementById('purchasePrice').value = purchasePrice.toFixed(0);
-            document.getElementById('homeownersInsurance').value = homeownersInsurance.toFixed(0);
 
+            // Calculation of monthly payments
             var monthlyPI = loanAmount > 0 ? calculateMonthlyPayment(loanAmount, interestRate, loanTerm) : 0;
             var monthlyTaxes = propertyTaxes / 12;
             var monthlyInsurance = homeownersInsurance / 12;
             var totalPITI = monthlyPI + monthlyTaxes + monthlyInsurance + hoaFee;
 
+            // Display results
             document.getElementById('monthlyPI').textContent = formatCurrency(monthlyPI);
             document.getElementById('monthlyTaxes').textContent = formatCurrency(monthlyTaxes);
             document.getElementById('monthlyInsurance').textContent = formatCurrency(monthlyInsurance);
@@ -642,9 +653,9 @@
                     warningAlert.innerHTML += suggestionsHtml;
                 }
                 
-                dscrStatus.innerHTML = '<div style="color: #ff6b6b; font-weight: bold;">Below Minimum Requirements</div>';
+                dscrStatus.innerHTML = '<div style="color: #ef4444; font-weight: bold;">Below Minimum Requirements</div>';
             } else if (dscrRatio >= 1.0 && dscrRatio < 1.25 && loanAmount >= 150000) {
-                dscrStatus.innerHTML = '<div style="color: #ffd93d; font-weight: bold;">Meets Minimum Requirements</div>';
+                dscrStatus.innerHTML = '<div style="color: #f97316; font-weight: bold;">Meets Minimum Requirements</div>';
                 
                 var suggestions = calculateSuggestions(purchasePrice, downPaymentPercent, interestRate, 1.25, monthlyRent, propertyTaxes, hoaFee);
                 if (suggestions.length > 0) {
@@ -656,7 +667,7 @@
                     warningAlert.innerHTML += suggestionsHtml;
                 }
             } else if (dscrRatio >= 1.25 && loanAmount >= 150000) {
-                dscrStatus.innerHTML = '<div style="color: #6bcf7f; font-weight: bold;">Excellent - Preferred by Lenders</div>';
+                dscrStatus.innerHTML = '<div style="color: #22c55e; font-weight: bold;">Excellent - Preferred by Lenders</div>';
             }
 
             if (loanAmount > 0 && loanAmount < 150000 && dscrRatio >= 1.0) {
