@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSCR Mortgage Calculator - Andrew Knight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(37, 48, 110, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #25306E, #92B1DD);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .header h2 {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 5px solid #25306E;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #25306E;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .calculator-section {
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #25306E;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #92B1DD;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #25306E;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        .input-addon {
+            background: #25306E;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 0 5px 5px 0;
+            font-weight: bold;
+        }
+
+        .rate-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .rate-btn {
+            background: #92B1DD;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .rate-btn:hover {
+            background: #25306E;
+        }
+
+        .results {
+            background: linear-gradient(135deg, #25306E, #92B1DD);
+            color: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .results h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .dscr-display {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .dscr-ratio {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .loan-limit-warning {
+            background: #ff6b35;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .suggestions {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .suggestions h4 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .suggestions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .suggestions li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .suggestions li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loan-officer {
+            background: #f8f9fa;
+            border: 2px solid #25306E;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .loan-officer h4 {
+            color: #25306E;
+            margin-bottom: 10px;
+        }
+
+        .disclaimers {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .disclaimers h4 {
+            color: #25306E;
+            margin-bottom: 15px;
+        }
+
+        .disclaimers p {
+            margin-bottom: 10px;
+        }
+
+        .disclaimers a {
+            color: #25306E;
+            text-decoration: none;
+        }
+
+        .disclaimers a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dscr-ratio {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DSCR Mortgage Calculator</h1>
+            <h2>Real Estate Investment Analysis Tool</h2>
+            <p>Expressly designed for Andrew Knight - Real Estate Investor, Austin, TX</p>
+        </div>
+
+        <div class="info-box">
+            <h3>About DSCR Financing</h3>
+            <p>Debt Service Coverage Ratio (DSCR) financing is a loan program designed for real estate investors purchasing rental properties. Unlike traditional mortgages that focus on personal income, DSCR loans qualify borrowers based on the property's rental income potential.</p>
+            <p><strong>Key Requirements:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>The rental income to PITI (Principal, Interest, Taxes, Insurance) ratio must be at least 1.00 (or 100%) for the loan to qualify</li>
+                <li>Minimum loan amount of $150,000 (most lenders will not lend below this threshold)</li>
+                <li>A ratio of 1.25 or higher is preferred by most lenders</li>
+            </ul>
+        </div>
+
+        <div class="calculator-section">
+            <div class="form-grid">
+                <div>
+                    <div class="form-group">
+                        <label for="propertyAddress">Property Address</label>
+                        <input type="text" id="propertyAddress" placeholder="123 Main St, Austin, TX 78701">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purchasePrice">Purchase Price</label>
+                        <div class="input-group">
+                            <input type="number" id="purchasePrice" placeholder="500000">
+                            <div class="input-addon">$</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="downPaymentPercent">Down Payment Percentage</label>
+                        <div class="input-group">
+                            <input type="number" id="downPaymentPercent" placeholder="25" step="0.1">
+                            <div class="input-addon">%</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="downPaymentAmount">Down Payment Amount</label>
+                        <div class="input-group">
+                            <input type="number" id="downPaymentAmount" placeholder="125000">
+                            <div class="input-addon">$</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanAmount">Loan Amount</label>
+                        <div class="input-group">
+                            <input type="number" id="loanAmount" placeholder="375000">
+                            <div class="input-addon">$</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="propertyTaxes">Annual Property Taxes</label>
+                        <div class="input-group">
+                            <input type="number" id="propertyTaxes" placeholder="12000">
+                            <div class="input-addon">$</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label for="homeownersInsurance">Homeowner's Insurance</label>
+                        <div class="input-group">
+                            <input type="number" id="homeownersInsurance" placeholder="2000">
+                            <div class="input-addon">$/year</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hoaFee">Monthly HOA Fee (if applicable)</label>
+                        <div class="input-group">
+                            <input type="number" id="hoaFee" placeholder="0" value="0">
+                            <div class="input-addon">$/month</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate</label>
+                        <div class="input-group">
+                            <input type="number" id="interestRate" value="7.25" step="0.125">
+                            <div class="input-addon">%</div>
+                        </div>
+                        <div class="rate-controls">
+                            <button class="rate-btn" onclick="adjustRate(-0.125)">-0.125%</button>
+                            <button class="rate-btn" onclick="adjustRate(0.125)">+0.125%</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanTerm">Loan Term</label>
+                        <select id="loanTerm">
+                            <option value="30">30 Years</option>
+                            <option value="25">25 Years</option>
+                            <option value="20">20 Years</option>
+                            <option value="15">15 Years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="monthlyRent">Expected Monthly Rental Income</label>
+                        <div class="input-group">
+                            <input type="number" id="monthlyRent" placeholder="4000">
+                            <div class="input-addon">$/month</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <h3>Calculation Results</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">Monthly Principal & Interest</div>
+                        <div class="result-value" id="monthlyPI">$0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Monthly Property Taxes</div>
+                        <div class="result-value" id="monthlyTaxes">$0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Monthly Insurance</div>
+                        <div class="result-value" id="monthlyInsurance">$0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total Monthly PITI</div>
+                        <div class="result-value" id="totalPITI">$0</div>
+                    </div>
+                </div>
+
+                <div class="dscr-display">
+                    <div class="result-label">Debt Service Coverage Ratio (DSCR)</div>
+                    <div class="dscr-ratio" id="dscrRatio">0.00</div>
+                    <div id="dscrStatus"></div>
+                </div>
+            </div>
+
+            <div id="warningAlert"></div>
+        </div>
+
+        <div class="loan-officer">
+            <h4>Your Loan Officer</h4>
+            <p><strong>Steve Tomaselli</strong><br>
+            NMLS #358920<br>
+            Edge Home Finance</p>
+        </div>
+
+        <div class="disclaimers">
+            <h4>Important Disclaimers</h4>
+            <p><strong>Equal Housing Opportunity:</strong> Edge Home Finance is committed to ensuring that all qualified applicants have equal access to credit without regard to race, color, religion, national origin, sex, handicap, or familial status.</p>
+            
+            <p><strong>Mortgage Disclaimer:</strong> The calculations provided are estimates only and should not be considered as a commitment to lend. Actual loan terms, payments, and costs may vary based on credit approval, property appraisal, and other underwriting factors. Interest rates are subject to change without notice.</p>
+            
+            <p><strong>DSCR Loan Disclaimer:</strong> DSCR loans are subject to different qualification criteria than traditional mortgages. Final approval depends on property cash flow analysis, borrower qualifications, and lender guidelines. Rental income projections must be supported by lease agreements or market rent analysis.</p>
+            
+            <p>This calculator is provided for educational purposes only. Consult with a qualified mortgage professional for personalized advice. All calculations are estimates and actual results may differ.</p>
+            
+            <p>For complete licensing and regulatory information, visit: <a href="https://edgehomefinance.com/licensing-disclaimer/" target="_blank">https://edgehomefinance.com/licensing-disclaimer/</a></p>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            if (isNaN(amount) || amount == null) return "$0";
+            return "$" + Math.round(amount).toLocaleString();
+        }
+
+        function calculateMonthlyPayment(loanAmount, rate, years) {
+            var monthlyRate = rate / 100 / 12;
+            var numPayments = years * 12;
+            
+            if (monthlyRate === 0) {
+                return loanAmount / numPayments;
+            }
+            
+            return loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                   (Math.pow(1 + monthlyRate, numPayments) - 1);
+        }
+
+        function adjustRate(change) {
+            var rateInput = document.getElementById('interestRate');
+            var currentRate = parseFloat(rateInput.value) || 7.25;
+            var newRate = Math.max(0.125, currentRate + change);
+            rateInput.value = newRate.toFixed(3);
+            calculateAll();
+        }
+
+        function calculateSuggestions(purchasePrice, currentDownPercent, currentRate, targetDSCR, monthlyRent, propertyTaxes, hoaFee) {
+            var homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value) || (purchasePrice * 0.004);
+            var monthlyTaxes = propertyTaxes / 12;
+            var monthlyInsurance = homeownersInsurance / 12;
+            var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+            var suggestions = [];
+
+            var targetPITI = monthlyRent / targetDSCR;
+            var targetPI = targetPITI - monthlyTaxes - monthlyInsurance - hoaFee;
+
+            if (targetPI > 0) {
+                var testDownPercent = currentDownPercent;
+                while (testDownPercent <= 50) {
+                    testDownPercent += 1;
+                    var testLoanAmount = purchasePrice * (1 - testDownPercent / 100);
+                    if (testLoanAmount >= 150000) {
+                        var testPI = calculateMonthlyPayment(testLoanAmount, currentRate, loanTerm);
+                        if (testPI <= targetPI) {
+                            suggestions.push("Increase down payment to " + testDownPercent + "% (" + formatCurrency(purchasePrice * testDownPercent / 100) + ") to achieve DSCR of " + targetDSCR.toFixed(2));
+                            break;
+                        }
+                    }
+                }
+
+                var testRate = currentRate;
+                while (testRate >= 3.0) {
+                    testRate -= 0.125;
+                    var currentLoanAmount = purchasePrice * (1 - currentDownPercent / 100);
+                    var testPI = calculateMonthlyPayment(currentLoanAmount, testRate, loanTerm);
+                    if (testPI <= targetPI) {
+                        suggestions.push("Buy down interest rate to " + testRate.toFixed(3) + "% to achieve DSCR of " + targetDSCR.toFixed(2));
+                        break;
+                    }
+                }
+
+                var bestCombo = null;
+                for (var downPercent = currentDownPercent + 1; downPercent <= 40; downPercent++) {
+                    for (var rate = currentRate - 0.125; rate >= 4.0; rate -= 0.125) {
+                        var testLoanAmount = purchasePrice * (1 - downPercent / 100);
+                        if (testLoanAmount >= 150000) {
+                            var testPI = calculateMonthlyPayment(testLoanAmount, rate, loanTerm);
+                            var testPITI = testPI + monthlyTaxes + monthlyInsurance + hoaFee;
+                            var testDSCR = monthlyRent / testPITI;
+                            
+                            if (testDSCR >= targetDSCR) {
+                                if (!bestCombo || (downPercent - currentDownPercent) + (currentRate - rate) * 8 < bestCombo.score) {
+                                    bestCombo = {
+                                        downPercent: downPercent,
+                                        rate: rate,
+                                        score: (downPercent - currentDownPercent) + (currentRate - rate) * 8
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (bestCombo) {
+                    suggestions.push("Combination: Increase down payment to " + bestCombo.downPercent + "% AND buy down rate to " + bestCombo.rate.toFixed(3) + "% to achieve DSCR of " + targetDSCR.toFixed(2));
+                }
+            }
+
+            return suggestions.slice(0, 3);
+        }
+
+        function calculateAll() {
+            var purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            var downPaymentPercent = parseFloat(document.getElementById('downPaymentPercent').value) || 0;
+            var downPaymentAmount = parseFloat(document.getElementById('downPaymentAmount').value) || 0;
+            var loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            var propertyTaxes = parseFloat(document.getElementById('propertyTaxes').value) || 0;
+            var homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value) || 0;
+            var hoaFee = parseFloat(document.getElementById('hoaFee').value) || 0;
+            var interestRate = parseFloat(document.getElementById('interestRate').value) || 7.25;
+            var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+            var monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+
+            // Determine which fields were entered and update the others
+            if (purchasePrice > 0 && downPaymentPercent > 0) {
+                downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
+                loanAmount = purchasePrice - downPaymentAmount;
+            } else if (purchasePrice > 0 && downPaymentAmount > 0) {
+                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+                loanAmount = purchasePrice - downPaymentAmount;
+            } else if (purchasePrice > 0 && loanAmount > 0) {
+                downPaymentAmount = purchasePrice - loanAmount;
+                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+            } else if (downPaymentAmount > 0 && loanAmount > 0) {
+                purchasePrice = downPaymentAmount + loanAmount;
+                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+            }
+
+            // If insurance is not manually entered, calculate it
+            if (homeownersInsurance === 0) {
+                homeownersInsurance = purchasePrice * 0.004;
+            }
+
+            document.getElementById('downPaymentAmount').value = downPaymentAmount.toFixed(0);
+            document.getElementById('downPaymentPercent').value = downPaymentPercent.toFixed(1);
+            document.getElementById('loanAmount').value = loanAmount.toFixed(0);
+            document.getElementById('purchasePrice').value = purchasePrice.toFixed(0);
+            document.getElementById('homeownersInsurance').value = homeownersInsurance.toFixed(0);
+
+            var monthlyPI = loanAmount > 0 ? calculateMonthlyPayment(loanAmount, interestRate, loanTerm) : 0;
+            var monthlyTaxes = propertyTaxes / 12;
+            var monthlyInsurance = homeownersInsurance / 12;
+            var totalPITI = monthlyPI + monthlyTaxes + monthlyInsurance + hoaFee;
+
+            document.getElementById('monthlyPI').textContent = formatCurrency(monthlyPI);
+            document.getElementById('monthlyTaxes').textContent = formatCurrency(monthlyTaxes);
+            document.getElementById('monthlyInsurance').textContent = formatCurrency(monthlyInsurance);
+            document.getElementById('totalPITI').textContent = formatCurrency(totalPITI);
+
+            var dscrRatio = totalPITI > 0 ? monthlyRent / totalPITI : 0;
+            document.getElementById('dscrRatio').textContent = dscrRatio.toFixed(2);
+
+            var warningAlert = document.getElementById('warningAlert');
+            var dscrStatus = document.getElementById('dscrStatus');
+            
+            warningAlert.innerHTML = '';
+            dscrStatus.innerHTML = '';
+
+            if (loanAmount > 0 && loanAmount < 150000) {
+                warningAlert.innerHTML += '<div class="loan-limit-warning">⚠️ LOAN AMOUNT TOO LOW: Most DSCR lenders require a minimum loan amount of $150,000. Current loan amount: ' + formatCurrency(loanAmount) + '</div>';
+            }
+
+            if (dscrRatio < 1.0 && monthlyRent > 0 && loanAmount >= 150000) {
+                warningAlert.innerHTML += '<div class="warning">⚠️ WARNING: DSCR ratio is below 1.00 - This property may not qualify for DSCR financing!</div>';
+                
+                var suggestions = calculateSuggestions(purchasePrice, downPaymentPercent, interestRate, 1.0, monthlyRent, propertyTaxes, hoaFee);
+                if (suggestions.length > 0) {
+                    var suggestionsHtml = '<div class="suggestions"><h4>💡 Suggestions to Improve DSCR:</h4><ul>';
+                    for (var i = 0; i < suggestions.length; i++) {
+                        suggestionsHtml += '<li>' + suggestions[i] + '</li>';
+                    }
+                    suggestionsHtml += '</ul></div>';
+                    warningAlert.innerHTML += suggestionsHtml;
+                }
+                
+                dscrStatus.innerHTML = '<div style="color: #ff6b6b; font-weight: bold;">Below Minimum Requirements</div>';
+            } else if (dscrRatio >= 1.0 && dscrRatio < 1.25 && loanAmount >= 150000) {
+                dscrStatus.innerHTML = '<div style="color: #ffd93d; font-weight: bold;">Meets Minimum Requirements</div>';
+                
+                var suggestions = calculateSuggestions(purchasePrice, downPaymentPercent, interestRate, 1.25, monthlyRent, propertyTaxes, hoaFee);
+                if (suggestions.length > 0) {
+                    var suggestionsHtml = '<div class="suggestions"><h4>💡 Optional Improvements to Reach Preferred 1.25 DSCR:</h4><ul>';
+                    for (var i = 0; i < Math.min(2, suggestions.length); i++) {
+                        suggestionsHtml += '<li>' + suggestions[i].replace('1.00', '1.25') + '</li>';
+                    }
+                    suggestionsHtml += '</ul></div>';
+                    warningAlert.innerHTML += suggestionsHtml;
+                }
+            } else if (dscrRatio >= 1.25 && loanAmount >= 150000) {
+                dscrStatus.innerHTML = '<div style="color: #6bcf7f; font-weight: bold;">Excellent - Preferred by Lenders</div>';
+            }
+
+            if (loanAmount > 0 && loanAmount < 150000 && dscrRatio >= 1.0) {
+                var minPurchasePrice = 150000 / (1 - downPaymentPercent / 100);
+                warningAlert.innerHTML += '<div class="suggestions"><h4>💡 Suggestion:</h4><ul><li>Look for properties priced at least ' + formatCurrency(minPurchasePrice) + ' to meet the minimum loan requirement of $150,000</li></ul></div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputs = document.querySelectorAll('input, select');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].id !== 'propertyAddress') {
+                    inputs[i].addEventListener('input', calculateAll);
+                    inputs[i].addEventListener('change', calculateAll);
+                }
+            }
+            calculateAll();
+        });
+    </script>
+</body>
+</html>
