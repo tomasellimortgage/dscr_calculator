@@ -345,7 +345,7 @@
                     <div class="form-group">
                         <label for="downPaymentPercent">Down Payment Percentage</label>
                         <div class="input-group">
-                            <input type="number" id="downPaymentPercent" placeholder="25.00" step="0.01">
+                            <input type="number" id="downPaymentPercent" placeholder="20.00" step="0.01">
                             <div class="input-addon">%</div>
                         </div>
                     </div>
@@ -353,7 +353,7 @@
                     <div class="form-group">
                         <label for="downPaymentAmount">Down Payment Amount</label>
                         <div class="input-group">
-                            <input type="number" id="downPaymentAmount" placeholder="125000" step="any">
+                            <input type="number" id="downPaymentAmount" placeholder="100000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                     <div class="form-group">
                         <label for="loanAmount">Loan Amount</label>
                         <div class="input-group">
-                            <input type="number" id="loanAmount" placeholder="375000" step="any">
+                            <input type="number" id="loanAmount" placeholder="400000" step="any">
                             <div class="input-addon">$</div>
                         </div>
                     </div>
@@ -379,7 +379,7 @@
                     <div class="form-group">
                         <label for="homeownersInsurance">Annual Homeowner's Insurance (0.04% of purchase price)</label>
                         <div class="input-group">
-                            <input type="number" id="homeownersInsurance" placeholder="200" step="any">
+                            <input type="number" id="homeownersInsurance" placeholder="0" step="any">
                             <div class="input-addon">$/year</div>
                         </div>
                     </div>
@@ -589,6 +589,11 @@
             var interestRate = parseFloat(document.getElementById('interestRate').value) || 7.25;
             var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
             var monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+
+            // Set initial default for down payment percentage if purchase price is present and fields are empty
+            if (purchasePrice > 0 && downPaymentPercent === 0 && downPaymentAmount === 0 && loanAmount === 0) {
+                 downPaymentPercent = 20;
+            }
 
             // Dynamic Down Payment and Loan Amount calculation based on which field was last edited
             if (purchasePrice > 0) {
