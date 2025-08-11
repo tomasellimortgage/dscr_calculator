@@ -345,7 +345,7 @@
                     <div class="form-group">
                         <label for="downPaymentPercent">Down Payment Percentage</label>
                         <div class="input-group">
-                            <input type="number" id="downPaymentPercent" placeholder="25" step="0.1">
+                            <input type="number" id="downPaymentPercent" placeholder="25.00" step="0.01">
                             <div class="input-addon">%</div>
                         </div>
                     </div>
@@ -377,9 +377,9 @@
 
                 <div>
                     <div class="form-group">
-                        <label for="homeownersInsurance">Annual Homeowner's Insurance</label>
+                        <label for="homeownersInsurance">Annual Homeowner's Insurance (0.04% of purchase price)</label>
                         <div class="input-group">
-                            <input type="number" id="homeownersInsurance" placeholder="2000" step="any">
+                            <input type="number" id="homeownersInsurance" placeholder="200" step="any">
                             <div class="input-addon">$/year</div>
                         </div>
                     </div>
@@ -503,10 +503,9 @@
         }
 
         function calculateSuggestions(purchasePrice, currentDownPercent, currentRate, targetDSCR, monthlyRent, propertyTaxes, hoaFee) {
-            // Read homeowners insurance from the input field
             var homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value) || 0;
             if (homeownersInsurance === 0 && purchasePrice > 0) {
-                homeownersInsurance = purchasePrice * 0.004;
+                homeownersInsurance = purchasePrice * 0.0004;
             }
 
             var monthlyTaxes = propertyTaxes / 12;
@@ -525,7 +524,7 @@
                     if (testLoanAmount >= 150000) {
                         var testPI = calculateMonthlyPayment(testLoanAmount, currentRate, loanTerm);
                         if (testPI <= targetPI) {
-                            suggestions.push("Increase down payment to " + testDownPercent + "% (" + formatCurrency(purchasePrice * testDownPercent / 100) + ") to achieve DSCR of " + targetDSCR.toFixed(2));
+                            suggestions.push("Increase down payment to " + testDownPercent.toFixed(2) + "% (" + formatCurrency(purchasePrice * testDownPercent / 100) + ") to achieve DSCR of " + targetDSCR.toFixed(2));
                             break;
                         }
                     }
@@ -565,11 +564,18 @@
                 }
 
                 if (bestCombo) {
-                    suggestions.push("Combination: Increase down payment to " + bestCombo.downPercent + "% AND buy down rate to " + bestCombo.rate.toFixed(3) + "% to achieve DSCR of " + targetDSCR.toFixed(2));
+                    suggestions.push("Combination: Increase down payment to " + bestCombo.downPercent.toFixed(2) + "% AND buy down rate to " + bestCombo.rate.toFixed(3) + "% to achieve DSCR of " + targetDSCR.toFixed(2));
                 }
             }
 
             return suggestions.slice(0, 3);
+        }
+
+        // Store the last edited field ID
+        let lastEditedField = null;
+
+        function updateLastEdited(event) {
+            lastEditedField = event.target.id;
         }
 
         function calculateAll() {
@@ -584,38 +590,33 @@
             var loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
             var monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
 
-            // Logic to handle user input for any of the linked fields (purchase price, down payment %, down payment amount, loan amount)
-            if (purchasePrice > 0 && downPaymentPercent > 0 && isNaN(downPaymentAmount) && isNaN(loanAmount)) {
-                downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
-                loanAmount = purchasePrice - downPaymentAmount;
-            } else if (purchasePrice > 0 && downPaymentAmount > 0 && isNaN(downPaymentPercent) && isNaN(loanAmount)) {
-                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
-                loanAmount = purchasePrice - downPaymentAmount;
-            } else if (purchasePrice > 0 && loanAmount > 0 && isNaN(downPaymentPercent) && isNaN(downPaymentAmount)) {
-                downPaymentAmount = purchasePrice - loanAmount;
-                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
-            } else if (downPaymentAmount > 0 && loanAmount > 0 && isNaN(purchasePrice) && isNaN(downPaymentPercent)) {
-                purchasePrice = downPaymentAmount + loanAmount;
-                downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+            // Dynamic Down Payment and Loan Amount calculation based on which field was last edited
+            if (purchasePrice > 0) {
+                if (lastEditedField === 'downPaymentPercent' || (downPaymentPercent > 0 && lastEditedField !== 'downPaymentAmount' && lastEditedField !== 'loanAmount')) {
+                    downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
+                    loanAmount = purchasePrice - downPaymentAmount;
+                } else if (lastEditedField === 'downPaymentAmount' || (downPaymentAmount > 0 && lastEditedField !== 'downPaymentPercent' && lastEditedField !== 'loanAmount')) {
+                    downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+                    loanAmount = purchasePrice - downPaymentAmount;
+                } else if (lastEditedField === 'loanAmount' || (loanAmount > 0 && lastEditedField !== 'downPaymentPercent' && lastEditedField !== 'downPaymentAmount')) {
+                    downPaymentAmount = purchasePrice - loanAmount;
+                    downPaymentPercent = (downPaymentAmount / purchasePrice) * 100;
+                }
             }
-
-            // **Updated logic to recalculate insurance if the user has not entered a value**
+            
+            // Auto-calculate Homeowner's Insurance if the field is empty and a purchase price is entered
             if (homeownersInsurance === 0 && purchasePrice > 0) {
-                homeownersInsurance = purchasePrice * 0.004;
+                homeownersInsurance = purchasePrice * 0.0004;
                 document.getElementById('homeownersInsurance').value = homeownersInsurance.toFixed(0);
-            } else if (homeownersInsurance > 0) {
-                // If user entered a value, keep it and don't overwrite it.
-                // Re-assigning here to ensure the value is a number for calculation.
-                homeownersInsurance = parseFloat(document.getElementById('homeownersInsurance').value);
             }
 
-            // Update all the input fields with the calculated values
+            // Update input fields with calculated values
             document.getElementById('downPaymentAmount').value = downPaymentAmount.toFixed(0);
-            document.getElementById('downPaymentPercent').value = downPaymentPercent.toFixed(1);
+            document.getElementById('downPaymentPercent').value = downPaymentPercent.toFixed(2);
             document.getElementById('loanAmount').value = loanAmount.toFixed(0);
             document.getElementById('purchasePrice').value = purchasePrice.toFixed(0);
-
-            // Calculation of monthly payments
+            
+            // Re-calculate PITI and DSCR
             var monthlyPI = loanAmount > 0 ? calculateMonthlyPayment(loanAmount, interestRate, loanTerm) : 0;
             var monthlyTaxes = propertyTaxes / 12;
             var monthlyInsurance = homeownersInsurance / 12;
@@ -680,8 +681,10 @@
             var inputs = document.querySelectorAll('input, select');
             for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].id !== 'propertyAddress') {
+                    // Add listeners for both input and change events to be responsive
                     inputs[i].addEventListener('input', calculateAll);
                     inputs[i].addEventListener('change', calculateAll);
+                    inputs[i].addEventListener('focus', updateLastEdited);
                 }
             }
             calculateAll();
